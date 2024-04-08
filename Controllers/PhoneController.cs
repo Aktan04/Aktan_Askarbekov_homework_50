@@ -35,4 +35,27 @@ public class PhoneController : Controller
         }
         return RedirectToAction("Index");
     }
+    
+    public IActionResult DownloadFile(string phoneName)
+    {
+        if (string.IsNullOrWhiteSpace(phoneName))
+        {
+            return NotFound();
+        }
+
+        string sanitizedCompanyName = phoneName.ToLower();
+        string directoryPath = Path.Combine(_appEnvironment.WebRootPath, "txtFiles");
+        string[] files = Directory.GetFiles(directoryPath);
+        string matchingFile = files.FirstOrDefault(file => Path.GetFileNameWithoutExtension(file) == sanitizedCompanyName);
+
+        if (!string.IsNullOrEmpty(matchingFile))
+        {
+            return PhysicalFile(matchingFile, "application/octet-stream", Path.GetFileName(matchingFile));
+        }
+        else
+        {
+            return NotFound();
+        }
+    }
+
 }
