@@ -1,0 +1,55 @@
+@model List<Phone>
+
+
+@{
+
+    ViewBag.Title = "Мобильные телефоны";
+
+    Layout = "_Layout";
+
+}
+
+
+<h2>Мобильные телефоны</h2>
+
+<a asp-action="Create" asp-controller="Phone">Добавить смартфон</a>
+
+<div class="table_section">
+
+    @if (@Model.Count == 0)
+    {
+        <p>Смартфоны еще не добавлены</p>
+    }
+
+    else
+    {
+
+        <table style="width: 100%;">
+            <tr>
+                <th>Id</th>
+                <th>Наименование</th>
+                <th>Компания</th>
+                <th>Стоимость</th>
+                <th></th>
+            </tr>
+
+            @foreach (var phone in @Model)
+            {
+                <tr>
+                    <td><a>@phone.Id</a></td>
+                    <td>@phone.Name</td>
+                    <td>@phone.Company</td>
+                    <td>@phone.Price</td>
+                    <td>
+                        <a asp-action="Create" asp-controller="Order" asp-route-phoneId="@phone.Id">Заказать</a> | 
+                        <a asp-action="DownloadFile" asp-controller="Phone" asp-route-phoneName="@phone.Name.Trim()">Скачать информацию</a> | 
+                        <a asp-action="RedirectToSite" asp-controller="Phone" asp-route-company="@phone.Company.Trim().ToLower()">Сайт производителя</a> | 
+                        <a asp-action="Edit" asp-controller="Phone" asp-route-id="@phone.Id">Редактировать</a>
+
+                    </td>
+                </tr>
+            }
+            
+        </table>
+    }
+</div>
