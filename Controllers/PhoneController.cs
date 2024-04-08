@@ -63,4 +63,26 @@ public class PhoneController : Controller
         string redirectUrl = "https://" + company + ".com";
         return RedirectPermanent(redirectUrl);
     }
+    
+    public IActionResult Edit(int id)
+    {
+        var phone = _context.Phones.Find(id);
+        if (phone == null)
+        {
+            return NotFound();
+        }
+        return View(phone);
+    }
+
+    [HttpPost]
+    public IActionResult Edit(Phone phone)
+    {
+        if (ModelState.IsValid)
+        {
+            _context.Update(phone);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        return View(phone);
+    }
 }
