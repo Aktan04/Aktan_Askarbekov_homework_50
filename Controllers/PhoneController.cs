@@ -57,5 +57,10 @@ public class PhoneController : Controller
             return NotFound();
         }
     }
-
+    
+    public IActionResult RedirectToSite(string company)
+    {
+        string redirectUrl = "https://" + company + ".com";
+        return RedirectPermanent(redirectUrl);
+    }
 }
